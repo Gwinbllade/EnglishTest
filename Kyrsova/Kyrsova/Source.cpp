@@ -147,10 +147,14 @@ void combineFunctions(Node* head)
     cout << "Total Score: " << totalScore << "/" << totalQuestions << endl;
 }
 
+string EditNameFile(const string& filename)
+{
+    return "D:\\osnov.prog\\Lab10\\" + filename + ".bin";
+}
 
 
 void readWordsFromFile(Node*& head, Node*& tail, const string& filename) {
-    ifstream file(filename, ios::binary);
+    ifstream file(EditNameFile(filename), ios::binary);
     if (file.is_open()) {
         string word;
         string translation;

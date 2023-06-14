@@ -1,27 +1,30 @@
 import tkinter as tk
+from tkinter import messagebox
 
 class Quiz:
-    def __init__(self, questions):
-        self.questions = questions
+    def __init__(self):
+        self.questions = self.readTest()
         self.current_question = 0
         self.score = 0
 
         self.window = tk.Tk()
         self.window.title("Вікторина")
+        self.window.geometry('600x600')
+        self.window.configure(bg="#eac1f5")
 
-        self.question_label = tk.Label(self.window, text="")
-        self.question_label.pack()
+        self.question_label = tk.Label(self.window, text="", font="Times 20", bg="#eac1f5")
+        self.question_label.pack(pady=50)
 
         self.answer_var = tk.StringVar()
         self.answer_var.set(None)
 
         self.radio_buttons = []
         for i in range(3):
-            radio_button = tk.Radiobutton(self.window, variable=self.answer_var, value=i)
+            radio_button = tk.Radiobutton(self.window, variable=self.answer_var, value=i+1,  selectcolor="#eac1f5", activebackground="#eac1f5")
             radio_button.pack()
             self.radio_buttons.append(radio_button)
 
-        self.next_button = tk.Button(self.window, text="Далі", command=self.next_question)
+        self.next_button = tk.Button(self.window, text="Далі", font="Times 20", width=10, height="1", command=self.next_question, bg="#eac1f5")
         self.next_button.pack()
 
         self.load_question()
@@ -30,17 +33,17 @@ class Quiz:
 
     def load_question(self):
         question = self.questions[self.current_question]
-        self.question_label.config(text=question["question"])
+        self.question_label.config(text="Який переклад слова: "+question["question"] + "?")
 
         for i in range(3):
-            self.radio_buttons[i].config(text=question["answers"][i])
+            self.radio_buttons[i].config(text=question["answers"][i], font="Times 20", width=10, height=3, bg="#eac1f8")
 
     def next_question(self):
         if self.answer_var.get() is not None:
             selected_answer = self.answer_var.get()
+
             correct_answer = self.questions[self.current_question]["correct_answer"]
-            
-            if selected_answer == correct_answer:
+            if int(selected_answer) == int(correct_answer):
                 self.score += 1
 
             self.current_question += 1
@@ -52,15 +55,21 @@ class Quiz:
                 self.show_results()
 
     def show_results(self):
+        result_message = f"Результат: {self.score}/{len(self.questions)}"
+        messagebox.showinfo("Результати", result_message)
         self.window.destroy()
-        print(f"Результат: {self.score}/{len(self.questions)}")
 
-# Заповніть список питань у форматі: {"question": "Питання", "answers": ["Відповідь 1", "Відповідь 2", "Відповідь 3"], "correct_answer": індекс_правильної_відповіді}
-questions = [
-    {"question": "Скільки планет у Сонячній системі?", "answers": ["7", "8", "9"], "correct_answer": 1},
-    {"question": "Яка столиця Франції?", "answers": ["Мадрид", "Париж", "Лондон"], "correct_answer": 1},
-    {"question": "Яка найбільша планета у Сонячній системі?", "answers": ["Марс", "Юпітер", "Венера"], "correct_answer": 1},
-    # Додайте інші питання за необхідності
-]
+    @staticmethod 
+    def readTest():
+        questions = []
+        with open("./BD_Test/test.txt", 'r', encoding="UTF-8") as file:
+            lines = file.readlines()
 
-quiz = Quiz(questions)
+        for line in lines:
+            line = line.strip()
+            data = line.split()
+            if len(data) > 1:
+                questions.append({"question": data[0], "answers": [data[1],data[2],data[3]], "correct_answer": int(data[4])})
+        return questions
+
+quiz = Quiz()

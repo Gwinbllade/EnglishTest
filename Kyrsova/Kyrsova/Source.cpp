@@ -193,7 +193,7 @@ public:
 
 int main() {
     system("chcp 1251");
-    string filePath = "D:\\osnov.prog\\Lab10\\Test.txt";
+    string filePath = "C:\\Users\\igorb\\OneDrive\\Рабочий стол\\EnglishTest\\Interface\\BD\\texst.txt";
     int questionCount = 3;
     WordTranslationQuiz quiz(filePath, questionCount);
     quiz.ReadFile();

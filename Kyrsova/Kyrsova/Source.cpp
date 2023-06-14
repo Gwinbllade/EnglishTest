@@ -59,7 +59,6 @@ public:
 class WordTranslationQuiz {
 private:
     string fileName;
-    vector<Question> questions;
     vector<Word> words;
     int questionCount;
 
@@ -113,7 +112,7 @@ public:
         mt19937 gen(rd());
         uniform_int_distribution<int> distr(0, 2);
 
-        ofstream outputFile("D:\\osnov.prog\\Lab10\\Ansver.txt");
+        ofstream outputFile("C:\\Users\\igorb\\OneDrive\\Рабочий стол\\EnglishTest\\Interface\\BD\\texst1.txt");
         if (!outputFile.is_open()) {
             cout << "Error: Unable to open the output file." << endl;
             return;
@@ -143,10 +142,8 @@ public:
                 }
             }
 
-            // Swap the correct word with the last word
-            swap(shuffledWords[correctIndex], shuffledWords[2]);
 
-            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << endl;
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctIndex << endl;
         }
 
         outputFile.close();

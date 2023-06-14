@@ -1,0 +1,33 @@
+from tkinter import *
+from PIL import Image, ImageTk
+
+window = Tk()
+
+def click():
+    global smaller_image
+    image_label.config(image=smaller_image2)
+    window.after(400, restore_image)
+
+def restore_image():
+    image_label.config(image=smaller_image)
+
+image = Image.open('Untitled8_20230614114457.png')
+resized_image = image.resize((50, 50))
+smaller_image = ImageTk.PhotoImage(resized_image)
+
+image2 = Image.open('Untitled8_20230614114453.png')
+resized_image2 = image2.resize((50, 50))
+smaller_image2 = ImageTk.PhotoImage(resized_image2)
+
+button = Button(window, text='Click me!!', command=click)
+button.config(font=('Ink Free', 30, 'bold'))
+button.configure(bg='#ca69fa')
+button.configure(fg='#390354')
+button.config(activebackground='#500d70')
+button.config(activeforeground='#d79df2')
+
+image_label = Label(window, image=smaller_image)
+image_label.pack(side='left')
+button.pack(side='left')
+
+window.mainloop()

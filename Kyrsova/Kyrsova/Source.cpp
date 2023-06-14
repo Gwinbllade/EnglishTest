@@ -59,7 +59,6 @@ public:
 class WordTranslationQuiz {
 private:
     string fileName;
-    vector<Question> questions;
     vector<Word> words;
     int questionCount;
 
@@ -113,7 +112,7 @@ public:
         mt19937 gen(rd());
         uniform_int_distribution<int> distr(0, 2);
 
-        ofstream outputFile("D:\\osnov.prog\\Lab10\\Ansver.txt");
+        ofstream outputFile("C:\\Users\\igorb\\OneDrive\\Рабочий стол\\EnglishTest\\Interface\\BD\\texst1.txt");
         if (!outputFile.is_open()) {
             cout << "Error: Unable to open the output file." << endl;
             return;
@@ -136,9 +135,14 @@ public:
             int correctIndex = 2;
             swap(shuffledWords[correctIndex], shuffledWords[0]);  // Move the correct word to the last position
 
+<<<<<<< HEAD
             int correctAnswer = find(shuffledWords.begin(), shuffledWords.end(), word.getEngWord()) - shuffledWords.begin() + 1;
 
             outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctAnswer << endl;
+=======
+
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctIndex << endl;
+>>>>>>> c7977bbcd3ba81740760586509a8f8a57a1ddef7
         }
 
         outputFile.close();
@@ -149,7 +153,7 @@ public:
 
 int main() {
     system("chcp 1251");
-    string filePath = "D:\\osnov.prog\\Lab10\\Test.txt";
+    string filePath = "C:\\Users\\igorb\\OneDrive\\Рабочий стол\\EnglishTest\\Interface\\BD\\texst.txt";
     int questionCount = 3;
     WordTranslationQuiz quiz(filePath, questionCount);
     quiz.ReadFile();

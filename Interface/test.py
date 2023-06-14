@@ -10,7 +10,6 @@ class FileBrowser(tk.Tk):
         self.title("Карточки")
         self.geometry("600x600")
         self.configure(bg="#eac1f5")#Колір  вікна
-# editButton.place(x='200', y='500')
         self.file_listbox = tk.Listbox(self)
         self.file_listbox.pack(pady=10)
 
@@ -20,7 +19,6 @@ class FileBrowser(tk.Tk):
         self.select_button.place(x='200', y='500')
 
         self.back_button = tk.Button(self, text="Назад", command=self.show_previous_line)
-        self.back_button.place(x='200', y='500')
         self.back_button.pack_forget()
 
         self.forward_button = tk.Button(self, text="Вперед", state=tk.DISABLED, command=self.show_next_line)
@@ -29,9 +27,8 @@ class FileBrowser(tk.Tk):
         self.show_translation_button = tk.Button(self, text="Показати переклад", command=self.show_translation)
         self.back_to_list_button = tk.Button(self, text="Назад до списку", command=self.go_back_to_list)
 
-        self.file_label = tk.Label(self)
-        self.word_label = tk.Label(self)
-        self.translation_label = tk.Label(self)
+        self.word_label = tk.Label(self, font="Times 25")
+        self.translation_label = tk.Label(self, font="Times 25")
         self.current_file = None
         self.current_lines = []
         self.current_line_index = 0
@@ -51,8 +48,6 @@ class FileBrowser(tk.Tk):
             self.forward_button.pack(pady=5)
             self.show_translation_button.pack(pady=5)
             self.back_to_list_button.pack(pady=5)
-            self.file_label.config(text=f"Вибраний файл: {selected_file.split('.')[0]}")
-            self.file_label.pack(pady=10)
             self.current_file = selected_file
             self.load_lines(selected_file)
             self.show_line(0)

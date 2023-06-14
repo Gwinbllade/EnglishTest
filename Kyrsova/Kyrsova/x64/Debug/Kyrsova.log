@@ -1,3 +1,7 @@
 ﻿  Source.cpp
+<<<<<<< HEAD
 D:\Курсова за 1,5 дня\Kyrsova\Kyrsova\Source.cpp(139,31): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
   Kyrsova.vcxproj -> D:\Курсова за 1,5 дня\Kyrsova\x64\Debug\Kyrsova.exe
+=======
+  Kyrsova.vcxproj -> C:\Users\igorb\OneDrive\Рабочий стол\EnglishTest\Kyrsova\x64\Debug\Kyrsova.exe
+>>>>>>> c7977bbcd3ba81740760586509a8f8a57a1ddef7

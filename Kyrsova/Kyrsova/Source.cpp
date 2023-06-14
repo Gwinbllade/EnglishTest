@@ -130,23 +130,15 @@ public:
                 uniqueWords.insert(randomWord);
             }
 
-            // Shuffle all words
             copy(uniqueWords.begin(), uniqueWords.end(), shuffledWords.begin());
             shuffle(shuffledWords.begin(), shuffledWords.end(), gen);
 
-            // Find the index of the correct word
-            int correctIndex = 0;
-            for (int i = 0; i < 3; i++) {
-                if (shuffledWords[i] == word.getEngWord()) {
-                    correctIndex = i;
-                    break;
-                }
-            }
+            int correctIndex = 2;
+            swap(shuffledWords[correctIndex], shuffledWords[0]);  // Move the correct word to the last position
 
-            // Swap the correct word with the last word
-            swap(shuffledWords[correctIndex], shuffledWords[2]);
+            int correctAnswer = find(shuffledWords.begin(), shuffledWords.end(), word.getEngWord()) - shuffledWords.begin() + 1;
 
-            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << endl;
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctAnswer << endl;
         }
 
         outputFile.close();

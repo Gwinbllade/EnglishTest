@@ -90,8 +90,9 @@ class FileBrowser:
                                                command=self.exit_main_menu)
         self.exit_main_menu_button.place(x='400', y='550')
 
-        folder_path = "./BD"  # Задайте шлях до папки тут
+        folder_path = "./BD" 
         self.load_files(folder_path)
+        
 
         self.file_listbox.bind("<<ListboxSelect>>", self.file_selected)
         self.line_listbox.bind("<<ListboxSelect>>", self.line_selected)

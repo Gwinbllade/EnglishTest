@@ -1,0 +1,36 @@
+from tkinter import *
+from PIL import Image, ImageTk
+
+window = Tk()
+
+def enlarge_image(event):
+    global smaller_image
+    resized_image = image.resize((350, 350))  # Increase size to 500x270 pixels
+    larger_image = ImageTk.PhotoImage(resized_image)
+    image_label.config(image=larger_image)
+    image_label.image = larger_image  # Update image reference
+
+def restore_image(event):
+    image_label.config(image=smaller_image)
+    image_label.image = smaller_image  # Update image reference
+
+button = Button(window, text='Click me!!')
+button.config(font=('Ink Free', 30, 'bold'))
+button.configure(bg='#ca69fa')
+button.configure(fg='#390354')
+button.config(activebackground='#500d70')
+button.config(activeforeground='#d79df2')
+
+image = Image.open('Untitled9_20230614181017.png')
+resized_image = image.resize((300, 300))
+smaller_image = ImageTk.PhotoImage(resized_image)
+
+image_label = Label(window, image=smaller_image)
+image_label.pack(side='bottom')
+
+button.pack(side='left')
+
+button.bind('<Enter>', enlarge_image)  # Bind enlarge_image to cursor entering button
+button.bind('<Leave>', restore_image)  # Bind restore_image to cursor leaving button
+
+window.mainloop()

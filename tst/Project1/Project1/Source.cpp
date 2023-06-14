@@ -123,7 +123,7 @@ public:
 
 
 int main() {
-    string path = "C:\\Users\\igorb\\OneDrive\\Рабочий стол\\test\\BD.txt";
+    string path = "D:\\osnov.prog\\Lab10\\Lab10.txt";
     WordTranslationQuiz w = WordTranslationQuiz(path, 3);
     w.ReadFile();
 

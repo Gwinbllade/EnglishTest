@@ -2,225 +2,202 @@
 #include <fstream>
 #include <string>
 #include <random>
+#include <vector>
+#include <algorithm>
+#include <set>
+
 
 using namespace std;
 
-struct Word {
-    string word;
-    string translation;
+
+class Question {
+private:
+    string ukrWord;
+    string engWord1;
+    string engWord2;
+    string engWord3;
+    int correctAnswer;
+
+
+public:
+    Question(string ukrWord, string engWord1, string engWord2, string engWord3, int correctAnswer) {
+        this->ukrWord = ukrWord;
+        this->engWord1 = engWord1;
+        this->engWord2 = engWord2;
+        this->engWord3 = engWord3;
+        this->correctAnswer = correctAnswer;
+    }
+
+    string getFormattedString() const {
+        string formattedString = ukrWord + " " + engWord1 + " " + engWord2 + " " + engWord3 + " " + to_string(correctAnswer);
+        return formattedString;
+    }
 };
 
-struct Node {
-    Word data;
-    Node* prev = nullptr;
-    Node* next = nullptr;
+
+class Word {
+private:
+    string ukrWord;
+    string engWord;
+
+public:
+    Word() {
+        ukrWord = "";
+        engWord = "";
+    }
+
+    Word(string u, string e) {
+        this->ukrWord = u;
+        this->engWord = e;
+    }
+
+    string getEngWord() const {
+        return this->engWord;
+    }
+
+    string getUkrWord() const {
+        return this->ukrWord;
+    }
 };
 
-int TrueWriting(const Node& data)
-{
-    int counter = 0;
-    string answer;
 
-    cout << data.data.word << endl;
-    cout << "Write a translation: ";
-    cin >> answer;
 
-    if (answer == data.data.translation)
-    {
-        return counter+1;
-    }
-    else {
-        return counter;
-    }
+class WordTranslationQuiz {
+private:
+    string fileName;
+    vector<Question> questions;
+    vector<Word> words;
+    int questionCount;
 
-}
 
-int ABCWriting(Node* head)
-{
-    int counter = 0;
-
-    // Count the number of words in the linked list
-    int wordCount = 0;
-    Node* current = head;
-    while (current != nullptr) {
-        wordCount++;
-        current = current->next;
+public:
+    WordTranslationQuiz(string fileName, int questionCount) {
+        this->fileName = fileName;
+        this->questionCount = questionCount;
     }
 
-    // Generate random indices for selecting words
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> distr(0, wordCount - 1);
-    int indices[3];
 
-    // Generate distinct indices
-    indices[0] = distr(gen);
-    indices[1] = distr(gen);
-    while (indices[1] == indices[0]) {
-        indices[1] = distr(gen);
-    }
-    indices[2] = distr(gen);
-    while (indices[2] == indices[0] || indices[2] == indices[1]) {
-        indices[2] = distr(gen);
-    }
+    void ReadFile() {
+        ifstream file(this->fileName);
 
-    // Determine the index for the correct answer (a, b, or c)
-    uniform_int_distribution<int> answerDistr(0, 2);
-    int correctIndex = answerDistr(gen);
+        if (file.is_open()) {
+            vector<string> lines;
+            string line;
+            string text1;
+            string text2;
+            string delimiter = " - ";
 
-    // Traverse the linked list to find the correct index and word
-    current = head;
-    int currentIndex = 0;
-    while (current != nullptr) {
-        if (currentIndex == indices[correctIndex]) {
-            break;
-        }
-        currentIndex++;
-        current = current->next;
-    }
+            // Read all lines from the file
+            while (getline(file, line)) {
+                // Divide the line into two words
+                size_t delimiterPos = line.find(delimiter);
+                if (delimiterPos != string::npos) {
+                    // Get the first part of the line before the delimiter
+                    text1 = line.substr(0, delimiterPos);
+                    // Get the second part of the line after the delimiter
+                    text2 = line.substr(delimiterPos + delimiter.length());
+                }
 
-    // Get the correct word for displaying the question
-    string correctWord = current->data.translation;
+                Word w = Word(text1, text2);
+                this->words.push_back(w);
+            }
 
-    // Traverse the linked list to the selected indices
-    current = head;
-    currentIndex = 0;
-    while (current != nullptr) {
-        if (currentIndex == indices[0] || currentIndex == indices[1] || currentIndex == indices[2]) {
-            cout << (currentIndex == indices[0] ? "a) " : (currentIndex == indices[1] ? "b) " : "c) "));
-            cout << current->data.word << endl;
-        }
+            file.close();
 
-        current = current->next;
-        currentIndex++;
-    }
+            // Shuffle the words randomly
+            random_device rd;
+            mt19937 gen(rd());
+            shuffle(this->words.begin(), this->words.end(), gen);
 
-    // Get user's choice
-    string choice;
-    cout << "Choose the correct translation to " << correctWord << " (a, b, or c): ";
-    cin >> choice;
-
-    // Check if the chosen option is correct
-    if (choice == "a" && correctIndex == 0) {
-        counter++;
-    }
-    else if (choice == "b" && correctIndex == 1) {
-        counter++;
-    }
-    else if (choice == "c" && correctIndex == 2) {
-        counter++;
-    }
-
-    return counter;
-}
-
-
-
-void combineFunctions(Node* head)
-{
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> distr(0, 1);
-
-    int totalScore = 0;
-    int totalQuestions = 0;
-
-    Node* current = head;
-    while (current != nullptr) {
-        int randomFunc = distr(gen);
-        cout << endl;
-        if (randomFunc == 0) {
-            int result = TrueWriting(*current);
-            totalScore += result;
-            totalQuestions++;
+            this->words.resize(this->questionCount);
         }
         else {
-            int result = ABCWriting(head);
-            totalScore += result;
-            totalQuestions++;
+            cout << "Error: Unable to open the file." << endl;
         }
-
-        current = current->next;
-
     }
 
-    cout << "Total Score: " << totalScore << "/" << totalQuestions << endl;
-}
+    void GenerateQuestions() {
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<int> distr(0, 2);
 
-string EditNameFile(const string& filename)
-{
-    return "D:\\osnov.prog\\Lab10\\" + filename + ".txt";
-}
+        for (const Word& word : this->words) {
+            vector<string> shuffledWords(3);
 
+            // Generate unique options
+            set<string> uniqueWords;
+            uniqueWords.insert(word.getEngWord());  // Add the correct word to uniqueWords
+            while (uniqueWords.size() < 3) {//33333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+                string randomWord = this->words[gen() % this->words.size()].getEngWord();
+                uniqueWords.insert(randomWord);
+            }
 
-void readWordsFromFile(Node*& head, Node*& tail, const string& filename) {
-    ifstream file(EditNameFile(filename), ios::in);
-    if (file.is_open()) {
-        string word;
-        string translation;
+            copy(uniqueWords.begin(), uniqueWords.end(), shuffledWords.begin());
+            shuffle(shuffledWords.begin(), shuffledWords.end(), gen);
 
-        while (getline(file, word) && getline(file, translation)) {
-            Word newWord = { word, translation };
+            int correctIndex = -1;
+            for (int i = 0; i < 3; i++) {
+                if (shuffledWords[i] == word.getEngWord()) {
+                    correctIndex = i;
+                    break;
+                }
+            }
 
-            Node* newNode = new Node;
-            newNode->data = newWord;
-            newNode->prev = nullptr;
-            newNode->next = nullptr;
+            vector<char> options = { 'a', 'b', 'c' };
+            shuffle(options.begin(), options.end(), gen);
 
-            if (head == nullptr) {
-                head = newNode;
-                tail = newNode;
+            cout << "Choose the correct translation for the word '" << word.getUkrWord() << "':" << endl;
+
+            // Display options a, b, and c with different words
+            for (int i = 0; i < 3; i++) {
+                if (i == correctIndex) {
+                    cout << options[i] << ") " << shuffledWords[i] << endl;
+                }
+                else {
+                    cout << options[i] << ") " << shuffledWords[i] << endl;
+                }
+            }
+
+            string choice;
+            cout << "Enter your choice (a, b, or c): ";
+            cin >> choice;
+
+            if (choice.length() == 1 && isalpha(choice[0])) {
+                int selectedIndex = -1;
+                for (int i = 0; i < 3; i++) {
+                    if (options[i] == choice[0]) {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+
+                if (selectedIndex == correctIndex) {
+                    cout << "Correct!" << endl;
+                }
+                else {
+                    cout << "Incorrect. The correct answer is option " << options[correctIndex] << ": " << word.getEngWord() << endl;
+                }
             }
             else {
-                tail->next = newNode;
-                newNode->prev = tail;
-                tail = newNode;
+                cout << "Invalid choice." << endl;
             }
+
+            cout << endl;
         }
-
-        file.close();
-        cout << "Words have been loaded from " << filename << endl;
     }
-    else {
-        cout << "Error: Unable to open the file." << endl;
-    }
-}
 
-void displayWords(Node* head) {
-    Node* current = head;
-    while (current != nullptr) {
-        cout << current->data.word << " - " << current->data.translation << endl;
-        current = current->next;
-    }
-}
 
-void freeMemory(Node* head) {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
-    }
-}
 
-int main()
-{
+};
+
+
+int main() {
     system("chcp 1251");
-    system("cls");
-
-    string filename = "C:\\Users\\igorb\\OneDrive\\Рабочий стол\\test\\BD.txt";
-
-    Node* head = nullptr;
-    Node* tail = nullptr;
-
-    readWordsFromFile(head, tail, filename);
-
-    displayWords(head);
-
-    cout << "\t\t\tStart test" << endl;
-    combineFunctions(head);
-
-    freeMemory(head);
+    string filePath = "D:\\osnov.prog\\Lab10\\Test.txt";
+    int questionCount = 3;
+    WordTranslationQuiz quiz(filePath, questionCount);
+    quiz.ReadFile();
+    quiz.GenerateQuestions();
 
     return 0;
 }

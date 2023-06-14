@@ -6,9 +6,7 @@
 #include <algorithm>
 #include <set>
 
-
 using namespace std;
-
 
 class Question {
 private:
@@ -17,7 +15,6 @@ private:
     string engWord2;
     string engWord3;
     int correctAnswer;
-
 
 public:
     Question(string ukrWord, string engWord1, string engWord2, string engWord3, int correctAnswer) {
@@ -33,7 +30,6 @@ public:
         return formattedString;
     }
 };
-
 
 class Word {
 private:
@@ -60,8 +56,6 @@ public:
     }
 };
 
-
-
 class WordTranslationQuiz {
 private:
     string fileName;
@@ -69,13 +63,11 @@ private:
     vector<Word> words;
     int questionCount;
 
-
 public:
     WordTranslationQuiz(string fileName, int questionCount) {
         this->fileName = fileName;
         this->questionCount = questionCount;
     }
-
 
     void ReadFile() {
         ifstream file(this->fileName);
@@ -121,21 +113,29 @@ public:
         mt19937 gen(rd());
         uniform_int_distribution<int> distr(0, 2);
 
+        ofstream outputFile("D:\\osnov.prog\\Lab10\\Ansver.txt");
+        if (!outputFile.is_open()) {
+            cout << "Error: Unable to open the output file." << endl;
+            return;
+        }
+
         for (const Word& word : this->words) {
             vector<string> shuffledWords(3);
 
             // Generate unique options
             set<string> uniqueWords;
             uniqueWords.insert(word.getEngWord());  // Add the correct word to uniqueWords
-            while (uniqueWords.size() < 3) {//33333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+            while (uniqueWords.size() < 3) {
                 string randomWord = this->words[gen() % this->words.size()].getEngWord();
                 uniqueWords.insert(randomWord);
             }
 
+            // Shuffle all words
             copy(uniqueWords.begin(), uniqueWords.end(), shuffledWords.begin());
             shuffle(shuffledWords.begin(), shuffledWords.end(), gen);
 
-            int correctIndex = -1;
+            // Find the index of the correct word
+            int correctIndex = 0;
             for (int i = 0; i < 3; i++) {
                 if (shuffledWords[i] == word.getEngWord()) {
                     correctIndex = i;
@@ -143,53 +143,17 @@ public:
                 }
             }
 
-            vector<char> options = { 'a', 'b', 'c' };
-            shuffle(options.begin(), options.end(), gen);
+            // Swap the correct word with the last word
+            swap(shuffledWords[correctIndex], shuffledWords[2]);
 
-            cout << "Choose the correct translation for the word '" << word.getUkrWord() << "':" << endl;
-
-            // Display options a, b, and c with different words
-            for (int i = 0; i < 3; i++) {
-                if (i == correctIndex) {
-                    cout << options[i] << ") " << shuffledWords[i] << endl;
-                }
-                else {
-                    cout << options[i] << ") " << shuffledWords[i] << endl;
-                }
-            }
-
-            string choice;
-            cout << "Enter your choice (a, b, or c): ";
-            cin >> choice;
-
-            if (choice.length() == 1 && isalpha(choice[0])) {
-                int selectedIndex = -1;
-                for (int i = 0; i < 3; i++) {
-                    if (options[i] == choice[0]) {
-                        selectedIndex = i;
-                        break;
-                    }
-                }
-
-                if (selectedIndex == correctIndex) {
-                    cout << "Correct!" << endl;
-                }
-                else {
-                    cout << "Incorrect. The correct answer is option " << options[correctIndex] << ": " << word.getEngWord() << endl;
-                }
-            }
-            else {
-                cout << "Invalid choice." << endl;
-            }
-
-            cout << endl;
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << endl;
         }
+
+        outputFile.close();
     }
 
 
-
 };
-
 
 int main() {
     system("chcp 1251");

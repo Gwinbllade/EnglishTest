@@ -149,12 +149,12 @@ void combineFunctions(Node* head)
 
 string EditNameFile(const string& filename)
 {
-    return "D:\\osnov.prog\\Lab10\\" + filename + ".bin";
+    return "D:\\osnov.prog\\Lab10\\" + filename + ".txt";
 }
 
 
 void readWordsFromFile(Node*& head, Node*& tail, const string& filename) {
-    ifstream file(EditNameFile(filename), ios::binary);
+    ifstream file(EditNameFile(filename), ios::in);
     if (file.is_open()) {
         string word;
         string translation;
@@ -208,9 +208,7 @@ int main()
     system("chcp 1251");
     system("cls");
 
-    string filename;
-    cout << "Enter the name of the file: ";
-    cin >> filename;
+    string filename = "C:\\Users\\igorb\\OneDrive\\Рабочий стол\\test\\BD.txt";
 
     Node* head = nullptr;
     Node* tail = nullptr;
@@ -226,13 +224,3 @@ int main()
 
     return 0;
 }
-
-
-
-//  D:\\osnov.prog\\Lab10\\Training.txt
-
-//  D:\\osnov.prog\\Lab10\\Lab10.txt
-
-//  D:\\Курсова за 1,5 дня\\Lab10.txt
-
-//   D:\\osnov.prog\\Lab10\\.bin

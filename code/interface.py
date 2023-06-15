@@ -17,13 +17,13 @@ class MainWindow:
         self.titel = Label(self.main_window, text='Do you speak English?', fg='black', font='Times 30', bg="#eac1f5")
         self.titel.place(x='100', y='90')
 
-        self.test_button = Button(self.main_window, text='Флеш картки', width=20, font="14px", command=self.open_flashCards)
+        self.test_button = Button(self.main_window, text='Флеш картки', width=20, font="14px", command=self.open_flashCards, bg="#00FFFF")
         self.test_button.place(x='50', y='200')
 
-        self.quiz_button = Button(self.main_window, text='Квіз', width=20, font="14px", command=self.open_quiz)
+        self.quiz_button = Button(self.main_window, text='Квіз', width=20, font="14px", command=self.open_quiz, bg="#00FFFF")
         self.quiz_button.place(x='350', y='200')
 
-        self.edit_button = Button(self.main_window, text='Редагувати БД', width=20, font="14px", command=self.open_edit_dialog)
+        self.edit_button = Button(self.main_window, text='Редагувати БД', width=20, font="14px", command=self.open_edit_dialog, bg="#00FFFF")
         self.edit_button.place(x='200', y='500')
 
     def open_edit_dialog(self):
@@ -55,11 +55,21 @@ class FileBrowser:
         self.window.geometry('600x600')
         self.window.configure(bg="#eac1f5")  # Колір головного вікна
 
-        self.file_listbox = tk.Listbox(self.window)
-        self.file_listbox.pack(side=tk.LEFT, fill=tk.BOTH, padx=10)  # Added padx and pady for spacing
+        file_frame1 = tk.Frame(self.window, bg="#eac1f5")
+        file_frame1.pack(side=tk.LEFT, fill=tk.BOTH, padx=10)
 
-        self.line_listbox = tk.Listbox(self.window)
-        self.line_listbox.pack(side=tk.LEFT, fill=tk.BOTH, padx=10)  # Added padx and pady for spacing
+        file_description_label1 = tk.Label(file_frame1, text="Файли з тестами", bg="#80ff00", font="Times 14", width=14)
+        file_description_label1.pack()
+        self.file_listbox = tk.Listbox(file_frame1)
+        self.file_listbox.pack(side=tk.LEFT, fill=tk.BOTH)  # Added padx and pady for spacing
+
+        file_frame2 = tk.Frame(self.window, bg="#eac1f5")
+        file_frame2.pack(side=tk.LEFT, fill=tk.BOTH, padx=(0,5))
+        
+        file_description_label2 = tk.Label(file_frame2, text="Слова", bg="#80ff00", font="Times 14", width=14)
+        file_description_label2.pack()
+        self.line_listbox = tk.Listbox(file_frame2)
+        self.line_listbox.pack(side=tk.LEFT, fill=tk.BOTH)  # Added padx and pady for spacing
 
         self.labal1 = tk.Label(text="Слово українською", bg="#eac1f5", font="Times 14")
         self.labal1.pack()
@@ -72,30 +82,30 @@ class FileBrowser:
         self.text_entry_2.pack(fill=tk.BOTH)
 
         self.update_line_button = tk.Button(self.window, text="Оновити слово", font="Times", width="15", height="1",
-                                            command=self.update_line)
+                                            command=self.update_line, bg="#00FFFF")
         self.update_line_button.pack(pady=10)
 
         self.delete_file_button = tk.Button(self.window, text="Видалити файл", font="Times", width="15", height="1",
-                                            command=self.delete_file)
+                                            command=self.delete_file, bg="#00FFFF")
         self.delete_file_button.pack(pady=10)
 
         self.delete_line_button = tk.Button(self.window, text="Видалити слово", font="Times", width="15", height="1",
-                                            command=self.delete_line)
+                                            command=self.delete_line, bg="#00FFFF")
         self.delete_line_button.pack(pady=10)
 
         self.add_file_button = tk.Button(self.window, text="Додати файл", font="Times", width="15", height="1",
-                                         command=self.add_file)
+                                         command=self.add_file, bg="#00FFFF")
         self.add_file_button.pack(pady=10)
 
         self.add_line_button = tk.Button(self.window, text="Додати слово", font="Times", width="15", height="1",
-                                         command=self.show_add_line_dialog)
+                                         command=self.show_add_line_dialog, bg="#00FFFF")
         self.add_line_button.pack(pady=10)
 
         self.selected_file = ""
         self.selected_line_index = -1
 
         self.exit_main_menu_button = tk.Button(self.window, text='Головне меню', width=20, font="14px",
-                                               command=self.exit_main_menu)
+                                               command=self.exit_main_menu, bg="#eac1f5")
         self.exit_main_menu_button.place(x='400', y='550')
 
         folder_path = "./BD" 
@@ -105,6 +115,8 @@ class FileBrowser:
         self.file_listbox.bind("<<ListboxSelect>>", self.file_selected)
         self.line_listbox.bind("<<ListboxSelect>>", self.line_selected)
 
+        
+    def run(self):
         self.window.mainloop()
 
     def load_files(self, folder_path):
@@ -117,12 +129,19 @@ class FileBrowser:
             self.file_listbox.insert(tk.END, file_name)
 
     def file_selected(self, event):
-        self.selected_file = self.file_listbox.get(self.file_listbox.curselection())
+        try:
+            self.selected_file = self.file_listbox.get(self.file_listbox.curselection())
+        except:
+            print("", end="")
         file_path = os.path.join("./BD", self.selected_file)  # Задайте шлях до папки тут
         self.display_file_content(file_path)
 
     def line_selected(self, event):
-        self.selected_line_index = self.line_listbox.curselection()[0]
+        try:
+            self.selected_line_index = self.line_listbox.curselection()[0]
+        except:
+            print("", end="")
+
         line_text = self.line_listbox.get(self.selected_line_index)
         parts = line_text.split(" - ")
         if len(parts) == 2:
@@ -236,17 +255,19 @@ class FileBrowser:
         main_window.run()
 
 
+
+
 class Quiz:
     def __init__(self):
         self.file_list = self.get_file_list()
         self.selected_file = None
 
         self.window = tk.Tk()
-        self.window.title("Вибір файлу")
+        self.window.title("Тест")
         self.window.geometry('600x600')
         self.window.configure(bg="#eac1f5")
 
-        self.file_label = tk.Label(self.window, text="Оберіть файл:", font="Times 20", bg="#eac1f5")
+        self.file_label = tk.Label(self.window, text="Оберіть файл", font="Times 20", bg="#eac1f5")
         self.file_label.pack(pady=50)
 
         self.file_listbox = tk.Listbox(self.window, font="Times 14")
@@ -257,7 +278,7 @@ class Quiz:
 
         self.file_listbox.bind("<<ListboxSelect>>", self.on_file_select)
 
-        self.start_button = tk.Button(self.window, text="Почати", font="Times 20", width=10, height="1", command=self.start_quiz, bg="#eac1f5")
+        self.start_button = tk.Button(self.window, text="Почати", font="Times 20", width=10, height="1", command=self.start_quiz, bg="#00FFFF")
         self.start_button.pack()
 
         self.exit_button = tk.Button(self.window, text="Вийти в головне меню", font="Times 12", width=20, height="1", command=self.go_to_main_menu, bg="#eac1f5")
@@ -311,7 +332,7 @@ class Quiz:
             radio_button.pack()
             self.radio_buttons.append(radio_button)
 
-        self.next_button = tk.Button(self.window, text="Далі", font="Times 20", width=10, height="1", command=self.next_question, bg="#eac1f5")
+        self.next_button = tk.Button(self.window, text="Далі", font="Times 20", width=10, height="1", command=self.next_question, bg="#00FFFF")
         self.next_button.pack()
 
         self.exit_button = tk.Button(self.window, text="Вийти в головне меню", font="Times 12", width=20, height="1", bg="#eac1f5", command = self.go_to_main_menu)
@@ -373,31 +394,31 @@ class Quiz:
 class FlashCards:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("Карточки")
+        self.window.title("Флеш картки")
         self.window.geometry("600x600")
         self.window.configure(bg="#eac1f5")  # Колір  вікна
-
-        self.file_listbox = tk.Listbox(self.window)
+        self.file_label = tk.Label(self.window, text="Оберіть файл", font="Times 20", bg="#eac1f5")
+        self.file_label.pack(pady=50)
+        self.file_listbox = tk.Listbox(self.window,font="Times 14")
         self.file_listbox.pack(pady=10)
 
         self.load_files("./BD")
 
-        self.select_button = tk.Button(self.window, text="Вибрати", width=20, font="14px", command=self.select_file)
-        self.select_button.place(x='200', y='500')
+        self.select_button = tk.Button(self.window, text="Вибрати", width=20, font="14px", command=self.select_file, bg="#00FFFF")
+        self.select_button.pack()
 
-        self.back_button = tk.Button(self.window, text="Назад", command=self.show_previous_line)
-        self.back_button.pack_forget()
+        self.back_button = tk.Button(self.window, text="Назад", command=self.show_previous_line, font="Times 12", width=20, height="1", bg="#00FFFF")
 
-        self.forward_button = tk.Button(self.window, text="Вперед", state=tk.DISABLED, command=self.show_next_line)
+        self.forward_button = tk.Button(self.window, text="Вперед", state=tk.DISABLED, command=self.show_next_line, font="Times 12", width=20, height="1", bg="#00FFFF")
 
-        self.show_translation_button = tk.Button(self.window, text="Показати переклад", command=self.show_translation)
-        self.back_to_list_button = tk.Button(self.window, text="Назад до списку", command=self.go_back_to_list)
+        self.show_translation_button = tk.Button(self.window, text="Показати переклад", command=self.show_translation, font="Times 12", width=20, height="1", bg="#00FFFF")
+        self.back_to_list_button = tk.Button(self.window, text="Назад до списку", command=self.go_back_to_list, font="Times 12", width=20, height="1", bg="#eac1f5")
 
         self.exit_button = tk.Button(self.window, text="Вийти в головне меню", font="Times 12", width=20, height="1", command=self.go_to_main_menu, bg="#eac1f5")
         self.exit_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
 
-        self.word_label = tk.Label(self.window, font="Times 25")
-        self.translation_label = tk.Label(self.window, font="Times 25")
+        self.word_label = tk.Label(self.window, font="Times 25", bg="#eac1f5")
+        self.translation_label = tk.Label(self.window, font="Times 25", bg="#eac1f5")
         self.current_file = None
         self.current_lines = []
         self.current_line_index = 0
@@ -423,12 +444,14 @@ class FlashCards:
     def select_file(self):
         selected_file = self.file_listbox.get(tk.ACTIVE)
         if selected_file:
+            self.select_button.place_forget()
             self.file_listbox.pack_forget()
             self.select_button.pack_forget()
-            self.back_button.pack(pady=5)
-            self.forward_button.pack(pady=5)
-            self.show_translation_button.pack(pady=5)
-            self.back_to_list_button.pack(pady=5)
+            self.file_label.pack_forget()
+            self.back_button.place(x="100", y="300")
+            self.forward_button.place(x="300", y="300")
+            self.show_translation_button.place(x="200", y="400")
+            self.back_to_list_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
             self.current_file = selected_file
             self.load_lines(selected_file)
             self.show_line(0)
@@ -445,8 +468,9 @@ class FlashCards:
         line = self.current_lines[line_index]
         line_parts = line.split('-')
         word = line_parts[1]  # Друга частина рядка (слово)
-        self.word_label.config(text=f"Слово: {word}")
-        self.word_label.pack(pady=10)
+        self.word_label.config(text=f"{word}")
+        self.word_label.pack(pady=(100, 0))
+
         self.current_line_index = line_index
         self.update_navigation_buttons()
 
@@ -476,8 +500,8 @@ class FlashCards:
         line_parts = line.split('-')
         translation = line_parts[0]  # Перша частина рядка (переклад)
         word = line_parts[1]  # Друга частина рядка (слово)
-        self.translation_label.config(text=f"Переклад: {translation}")
-        self.translation_label.pack(pady=10)
+        self.translation_label.config(text=f"{translation}")
+        self.translation_label.pack(pady=(20, 0))
 
     def hide_translation(self):
         self.translation_label.pack_forget()
@@ -485,17 +509,18 @@ class FlashCards:
     def go_back_to_list(self):
         self.word_label.pack_forget()
         self.translation_label.pack_forget()
-        self.back_button.pack_forget()
-        self.forward_button.pack_forget()
-        self.show_translation_button.pack_forget()
+        self.back_button.place_forget()
+        self.forward_button.place_forget()
+        self.show_translation_button.place_forget()
         self.back_to_list_button.pack_forget()
+        self.file_label.pack(pady=50)
         self.file_listbox.pack(pady=10)
         self.select_button.pack(pady=5)
         self.current_file = None
         self.current_lines.clear()
         self.current_line_index = 0
 
-        
+
 
 if __name__ == "__main__":
     subprocess.call(['g++', './Source.cpp', '-o', 'm'])

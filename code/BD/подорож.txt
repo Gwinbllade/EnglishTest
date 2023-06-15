@@ -1,0 +1,12 @@
+Подорож - Journey
+Відпустка - Vacation
+Мандрівка - Trip
+Турист - Tourist
+Паспорт - Passport
+Багаж - Luggage
+Готель - Hotel
+Аеропорт - Airport
+Екскурсія - Excursion
+Картка пам'яті - Souvenir
+Мапа - Map
+Білет - Ticket

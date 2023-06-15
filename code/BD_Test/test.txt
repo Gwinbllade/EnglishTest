@@ -1,0 +1,15 @@
+Капуста Zucchani Beea Cabbage 3
+Горошок Beea Cucumber Onion 1
+Кабачок Zucchani Tomato Eggplant 1
+Ручка 1 Pen Cabbage 2
+Помідор Garpic Tomato Cabbage 2
+Часник Garpic Pen Potato 1
+Цибуля Cucumber Onion Tomato 2
+Буряк Onion Cucumber Beetroot 3
+Огірок Cucumber Tomato Zucchani 1
+Авокадо Beetroot Avocado Beea 2
+Перець Peper Beetroot Zucchani 1
+Баклажан Pen Eggplant Avocado 2
+1 1 Pen Potato 1
+Картопля Beea Potato Tomato 2
+Морква Carrot Peper Beea 1

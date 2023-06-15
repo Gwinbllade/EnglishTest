@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Капуста Zucchani Beea Cabbage 3
 Горошок Beea Cucumber Onion 1
 Кабачок Zucchani Tomato Eggplant 1
@@ -13,3 +14,17 @@
 Ручка Eyes Pen Potato 2
 Картопля Beea Potato Tomato 2
 Морква Carrot Peper Beea 1
+=======
+Картка пам'яті Tourist Hotel Souvenir 3
+Паспорт Excursion Passport Vacation 2
+Мандрівка Trip Tourist Passport 1
+Аеропорт Airport Ticket Souvenir 1
+Багаж Ticket Trip Luggage 3
+Відпустка Journey Souvenir Vacation 3
+Білет Luggage Ticket Trip 2
+Подорож Journey Ticket Souvenir 1
+Турист Souvenir Passport Tourist 3
+Екскурсія Passport Excursion Luggage 2
+Готель Passport Hotel Map 2
+Мапа Ticket Passport Map 3
+>>>>>>> 288b0eea0e068710ac75089078a910036261785c

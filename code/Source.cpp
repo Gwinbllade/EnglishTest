@@ -136,9 +136,20 @@ public:
             int correctIndex = 2;
             swap(shuffledWords[correctIndex], shuffledWords[0]);  // Move the correct word to the last position
 
+<<<<<<< HEAD:code/Source.cpp
             int correctAnswer = find(shuffledWords.begin(), shuffledWords.end(), word.getEngWord()) - shuffledWords.begin() + 1;
 
             outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctAnswer << endl;
+=======
+<<<<<<< HEAD
+            int correctAnswer = find(shuffledWords.begin(), shuffledWords.end(), word.getEngWord()) - shuffledWords.begin() + 1;
+
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctAnswer << endl;
+=======
+
+            outputFile << word.getUkrWord() << " " << shuffledWords[0] << " " << shuffledWords[1] << " " << shuffledWords[2] << " " << correctIndex << endl;
+>>>>>>> c7977bbcd3ba81740760586509a8f8a57a1ddef7
+>>>>>>> a0ff9b647359e54812f0bc46151f663bf575397b:Kyrsova/Kyrsova/Source.cpp
         }
 
         outputFile.close();

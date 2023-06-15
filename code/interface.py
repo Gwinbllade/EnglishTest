@@ -43,6 +43,7 @@ class MainWindow:
         fleshCardsWindow.run() 
 
     def run(self):
+       
         self.main_window.mainloop()
 
 
@@ -289,7 +290,6 @@ class Quiz:
         num_lines = sum(1 for line in open(path))
  
         self.questions = self.read_test_file("./BD_Test/test.txt")
-        subprocess.call(['g++', './Source.cpp', '-o', 'm'])
         subprocess.call(['./m', path, str(num_lines)])
         self.current_question = 0
         self.score = 0
@@ -489,7 +489,6 @@ class FlashCards:
         self.forward_button.pack_forget()
         self.show_translation_button.pack_forget()
         self.back_to_list_button.pack_forget()
-        self.file_label.pack_forget()
         self.file_listbox.pack(pady=10)
         self.select_button.pack(pady=5)
         self.current_file = None
@@ -499,6 +498,6 @@ class FlashCards:
         
 
 if __name__ == "__main__":
+    subprocess.call(['g++', './Source.cpp', '-o', 'm'])
     window = MainWindow()
     window.run()
-
